@@ -1,13 +1,13 @@
-import express from 'express';
-import path from 'path';
-import connectDb from './lib/db.js';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import authRoutes from './routes/authRoutes.js';
-import messageRoutes from './routes/messageRoute.js';
-import { ENV } from './lib/env.js';
-import { errorHandler, notFound } from './middleware/errorMiddleware.js';
-import { app, server } from './lib/socket.js';
+import express from "express";
+import path from "path";
+import connectDb from "./lib/db.js";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import authRoutes from "./routes/authRoutes.js";
+import messageRoutes from "./routes/messageRoute.js";
+import { ENV } from "./lib/env.js";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+import { app, server } from "./lib/socket.js";
 
 // Middleware
 app.use(express.json());
@@ -16,18 +16,18 @@ app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 
 // API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/messages', messageRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
 //!............. Deployment setup
 const __dirname = path.resolve();
 
-if (ENV.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, 'frontend', 'dist');
+if (ENV.NODE_ENV === "production") {
+  const distPath = path.join(__dirname, "frontend", "dist");
   app.use(express.static(distPath));
-  app.get(/.*/, (req, res) => res.sendFile(path.join(distPath, 'index.html')));
+  app.get(/.*/, (req, res) => res.sendFile(path.join(distPath, "index.html")));
 } else {
-  app.get('/', (req, res) => res.send('Please set NODE_ENV=production'));
+  app.get("/", (req, res) => res.send("Please set NODE_ENV=production"));
 }
 
 //!............. End deployment setup
